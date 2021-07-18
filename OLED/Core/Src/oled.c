@@ -19,7 +19,7 @@ void oled_init(void) {
 			0x10, //---set high column address
 			0x40, //--set start line address
 			0x81, //--set contrast control register
-			0xff, //亮度调节 0x00~0xff
+			0xFF, //亮度调节 0x00~0xff
 			0xa1, //--set segment re-map 0 to 127
 			0xa6, //--set normal display
 			0xa8, //--set multiplex ratio(1 to 64)
@@ -75,10 +75,12 @@ void oled_SetPos(unsigned char seg, unsigned char page) //设置起始点坐标
 }
 
 void oled_fill(unsigned char data) {
-	for(unsigned char page = 0; page < 8; page++) {
-		for(unsigned char seg = 0; seg < 128; seg++) {
-			oled_SetPos(seg, page);
-			HAL_I2C_Mem_Write(&hi2c1, I2C_SLAVE_OLED_ADDRESS, I2C_SLAVE_OLED_DATA, I2C_MEMADD_SIZE_8BIT, &data, sizeof(data), 1000 );
-		}
+	uint8_t temp[128];
+	for (uint8_t i=0; i < 128; i++){
+		temp[i] = data;
+	}
+	for(uint8_t page = 0; page < 8; page++) {
+		oled_SetPos(0, page);
+		HAL_I2C_Mem_Write(&hi2c1, I2C_SLAVE_OLED_ADDRESS, I2C_SLAVE_OLED_DATA, I2C_MEMADD_SIZE_8BIT, &temp[0], sizeof(temp), 1000 );
 	}
 }
