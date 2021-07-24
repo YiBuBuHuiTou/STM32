@@ -15,4 +15,5 @@
 void oled_init( void );
 void oled_SetPos(unsigned char x, unsigned char y);
 void oled_fill(unsigned char data);
+void oled_clear(uint8_t seg_start, uint8_t seg_end, uint8_t page_start, uint8_t page_end);
 #endif /* INC_OLED_H_ */

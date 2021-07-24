@@ -84,3 +84,12 @@ void oled_fill(unsigned char data) {
 		HAL_I2C_Mem_Write(&hi2c1, I2C_SLAVE_OLED_ADDRESS, I2C_SLAVE_OLED_DATA, I2C_MEMADD_SIZE_8BIT, &temp[0], sizeof(temp), 1000 );
 	}
 }
+
+void oled_clear(uint8_t seg_start, uint8_t seg_end, uint8_t page_start, uint8_t page_end) {
+	uint8_t buff[8*128] = {0};
+	for(; page_start <= page_end; page_start++) {
+		oled_SetPos(seg_start, page_start);
+		HAL_I2C_Mem_Write(&hi2c1, I2C_SLAVE_OLED_ADDRESS, I2C_SLAVE_OLED_DATA, I2C_MEMADD_SIZE_8BIT, &buff[0], seg_end - seg_start + 1, 1000 );
+	}
+
+}
